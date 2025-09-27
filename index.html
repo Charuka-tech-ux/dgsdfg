@@ -186,7 +186,7 @@
 
     .services-table {
         width: 100%;
-        min-width: 700px;
+        min-width: 800px;
         border-collapse: collapse;
         background: var(--surface-bg);
     }
@@ -203,11 +203,13 @@
         white-space: nowrap;
     }
 
-    .services-table th:nth-child(1) { width: 45%; }
-    .services-table th:nth-child(2) { width: 12%; text-align: center; }
-    .services-table th:nth-child(3) { width: 18%; text-align: right; }
-    .services-table th:nth-child(4) { width: 18%; text-align: right; }
-    .services-table th:nth-child(5) { width: 7%; text-align: center; }
+    .services-table th:nth-child(1) { width: 35%; } /* Desc */
+    .services-table th:nth-child(2) { width: 10%; text-align: center; } /* Qty */
+    .services-table th:nth-child(3) { width: 18%; text-align: right; } /* Price */
+    .services-table th:nth-child(4) { width: 18%; text-align: right; } /* Total */
+    .services-table th:nth-child(5) { width: 6%; text-align: center; }  /* Paid */
+    .services-table th:nth-child(6) { width: 6%; text-align: center; }  /* Due */
+    .services-table th:nth-child(7) { width: 7%; text-align: center; }  /* Action */
 
     .services-table td {
         padding: 0.75rem;
@@ -227,6 +229,26 @@
         font-size: 0.875rem;
         margin: 0;
         box-sizing: border-box;
+    }
+    
+    .services-table input[type="checkbox"] {
+        cursor: pointer;
+        width: 1.15rem;
+        height: 1.15rem;
+        margin: auto;
+        display: block;
+    }
+    
+    /* Styles for Paid/Due status on service description */
+    .service-paid {
+        text-decoration: line-through;
+        color: var(--success-color) !important;
+        font-style: italic;
+    }
+
+    .service-due {
+        color: var(--warning-color) !important;
+        font-weight: 600;
     }
 
     .services-table input:focus {
@@ -437,13 +459,14 @@
 
     .totals p:last-child {
         margin-bottom: 0;
+    }
+    
+    .totals #grandTotal {
         font-size: 1.5rem;
         font-weight: 700;
         color: var(--primary-color);
-        padding-top: 0.75rem;
-        border-top: 2px solid var(--border-color);
     }
-    
+
     .preview-box {
         background: var(--surface-bg);
         border-radius: var(--border-radius-sm);
@@ -575,7 +598,7 @@
             font-size: 1rem;
         }
 
-        .totals p:last-child {
+        .totals #grandTotal {
             font-size: 1.25rem;
         }
 
@@ -999,6 +1022,8 @@
                 <th>Qty</th>
                 <th>Price (LKR)</th>
                 <th>Total (LKR)</th>
+                <th>Paid</th>
+                <th>Due</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -1065,7 +1090,6 @@
       
       <div class="totals">
         <p>Total Paid: <span id="totalPaid">0.00 LKR</span></p>
-        <p>Outstanding Balance: <span id="amountDue">0.00 LKR</span></p>
       </div>
       
       <div class="btn-group">
@@ -1204,6 +1228,8 @@ function addServiceRow(desc = '', qty = 1, price = 0) {
             <input type="number" value="${price.toFixed(2)}" min="0" step="0.01" oninput="calculateTotals()">
         </td>
         <td class="line-total">0.00</td>
+        <td><input type="checkbox" class="paid-check" onchange="updateServiceStatus(this)"></td>
+        <td><input type="checkbox" class="due-check" onchange="updateServiceStatus(this)"></td>
         <td>
             <button class="btn danger small" onclick="removeServiceRow(this)">Remove</button>
         </td>
@@ -1216,6 +1242,25 @@ function addServiceRow(desc = '', qty = 1, price = 0) {
 function removeServiceRow(button) {
     button.closest('tr').remove();
     calculateTotals();
+}
+
+function updateServiceStatus(checkbox) {
+    const row = checkbox.closest('tr');
+    const descriptionInput = row.cells[0].querySelector('input');
+    const paidCheckbox = row.cells[4].querySelector('.paid-check');
+    const dueCheckbox = row.cells[5].querySelector('.due-check');
+
+    // Remove existing status classes first
+    descriptionInput.classList.remove('service-paid', 'service-due');
+
+    // Enforce mutual exclusivity and apply styles
+    if (checkbox.classList.contains('paid-check') && checkbox.checked) {
+        dueCheckbox.checked = false;
+        descriptionInput.classList.add('service-paid');
+    } else if (checkbox.classList.contains('due-check') && checkbox.checked) {
+        paidCheckbox.checked = false;
+        descriptionInput.classList.add('service-due');
+    }
 }
 
 function calculateTotals() {
@@ -1237,21 +1282,11 @@ function calculateTotals() {
 }
 
 function updateTotals() {
-    const grandTotal = parseFloat(document.getElementById('grandTotal').textContent.replace(/ LKR|,/g, '')) || 0;
-    
     const totalPaid = transactions
         .filter(t => t.type === 'Payment')
         .reduce((sum, t) => sum + t.amount, 0);
-    const totalRefunded = transactions
-        .filter(t => t.type === 'Refund')
-        .reduce((sum, t) => sum + t.amount, 0);
-    
-    const amountDue = grandTotal - totalPaid + totalRefunded;
     
     document.getElementById('totalPaid').textContent = formatCurrency(totalPaid) + ' LKR';
-    // This 'amountDue' span is the "Outstanding Balance" on the transactions page, which should still calculate for user reference.
-    document.getElementById('amountDue').textContent = formatCurrency(amountDue) + ' LKR';
-    // The 'dueAmountField' on the details page is now fully manual and is NOT updated here.
 }
 
 // Transaction Management
@@ -1405,10 +1440,27 @@ function generatePreviewContent() {
             const qty = row.cells[1].querySelector('input').value;
             const price = formatCurrency(parseFloat(row.cells[2].querySelector('input').value) || 0);
             const total = row.cells[3].textContent;
-            serviceRowsHTML += `<tr><td>${desc}</td><td>${qty}</td><td>${price}</td><td>${total}</td></tr>`;
+            
+            const isPaid = row.cells[4].querySelector('.paid-check').checked;
+            const isDue = row.cells[5].querySelector('.due-check').checked;
+            
+            let statusCell = '';
+            let descriptionStyle = '';
+            
+            if (isPaid) {
+                statusCell = '<span style="color: #059669; font-weight: bold; font-size: 10pt;">✓ PAID</span>';
+                descriptionStyle = 'text-decoration: line-through; color: #059669;';
+            } else if (isDue) {
+                statusCell = '<span style="color: #d97706; font-weight: bold; font-size: 10pt;">⚠ DUE</span>';
+                descriptionStyle = 'color: #d97706; font-weight: bold;';
+            } else {
+                statusCell = '<span style="color: #64748b; font-size: 9pt;">Pending</span>';
+            }
+            
+            serviceRowsHTML += `<tr><td style="${descriptionStyle}">${desc}</td><td>${qty}</td><td>${price}</td><td>${total}</td><td style="text-align: center;">${statusCell}</td></tr>`;
         }
     });
-    if (!serviceRowsHTML) serviceRowsHTML = `<tr><td colspan="4" style="text-align:center;">No services listed.</td></tr>`;
+    if (!serviceRowsHTML) serviceRowsHTML = `<tr><td colspan="5" style="text-align:center;">No services listed.</td></tr>`;
 
     let transactionRowsHTML = '';
     if (transactions.length > 0) {
@@ -1425,7 +1477,6 @@ function generatePreviewContent() {
         .filter(t => t.type === 'Payment')
         .reduce((sum, t) => sum + t.amount, 0));
 
-    // *** NEW: Get the manually entered due amount from the first page for the preview ***
     const manualDueAmountValue = parseFloat(document.getElementById('dueAmountField').value) || 0;
     const formattedDueAmount = formatCurrency(manualDueAmountValue);
 
@@ -1473,7 +1524,7 @@ function generatePreviewContent() {
             <div class="services-section">
                 <div class="section-title">Services & Products</div>
                 <table class="pdf-table">
-                    <thead><tr><th>Description</th><th>Qty</th><th>Price (LKR)</th><th>Total (LKR)</th></tr></thead>
+                    <thead><tr><th>Description</th><th>Qty</th><th>Price (LKR)</th><th>Total (LKR)</th><th>Status</th></tr></thead>
                     <tbody>${serviceRowsHTML}</tbody>
                 </table>
             </div>
