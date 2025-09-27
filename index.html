@@ -83,17 +83,6 @@
         z-index: 1;
     }
 
-    .header img {
-        height: 120px;
-        width: auto;
-        margin-bottom: 1.5rem;
-        border-radius: 12px;
-        box-shadow: var(--shadow-md);
-        background: white;
-        padding: 10px;
-        object-fit: contain;
-    }
-
     .header h1 {
         font-size: 2.5rem;
         font-weight: 700;
@@ -180,69 +169,87 @@
         margin-bottom: 2rem;
     }
 
-    .amount-display {
-        background: linear-gradient(135deg, var(--primary-light), var(--surface-bg));
-        border: 2px solid var(--primary-color);
+    /* Services Table Styles */
+    .table-container {
+        background: var(--surface-bg);
         border-radius: var(--border-radius-sm);
-        padding: 1rem;
-        text-align: center;
-        font-weight: 600;
-        font-size: 1.25rem;
-        color: var(--primary-color);
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .amount-display small {
-        font-size: 0.75rem;
-        font-weight: 400;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        opacity: 0.8;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1.5rem;
-        border-radius: var(--border-radius-sm);
-        overflow: hidden;
         box-shadow: var(--shadow-sm);
+        border: 2px solid var(--border-color);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
     }
 
-    th, td {
-        padding: 1rem;
+    .table-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .services-table {
+        width: 100%;
+        min-width: 700px;
+        border-collapse: collapse;
+        background: var(--surface-bg);
+    }
+
+    .services-table th {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+        color: white;
+        padding: 1rem 0.75rem;
         text-align: left;
-        vertical-align: middle;
-        border-bottom: 1px solid var(--border-light);
-    }
-
-    th {
-        background: linear-gradient(135deg, var(--app-bg), var(--border-light));
         font-weight: 600;
         font-size: 0.875rem;
         text-transform: uppercase;
         letter-spacing: 0.025em;
-        color: var(--text-medium);
+        white-space: nowrap;
     }
-    
-    td input { 
-        margin: 0;
+
+    .services-table th:nth-child(1) { width: 45%; }
+    .services-table th:nth-child(2) { width: 12%; text-align: center; }
+    .services-table th:nth-child(3) { width: 18%; text-align: right; }
+    .services-table th:nth-child(4) { width: 18%; text-align: right; }
+    .services-table th:nth-child(5) { width: 7%; text-align: center; }
+
+    .services-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-light);
+        vertical-align: middle;
+    }
+
+    .services-table tbody tr:hover {
+        background: var(--app-bg);
+    }
+
+    .services-table input {
+        width: 100%;
         padding: 0.5rem;
         border: 1px solid var(--border-color);
-        width: 100%;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        margin: 0;
         box-sizing: border-box;
     }
-    
-    #servicesTable input[type="number"] {
+
+    .services-table input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        transform: none;
+    }
+
+    .services-table input[type="number"] {
         text-align: right;
     }
-    
-    #servicesTable td:nth-child(2) { width: 80px; }
-    #servicesTable td:nth-child(3) { width: 120px; }
-    #servicesTable td:nth-child(4) { width: 120px; text-align: right; font-weight: 600; color: var(--primary-color); }
-    #servicesTable th:nth-child(4) { text-align: right; }
+
+    .services-table .qty-input {
+        text-align: center !important;
+        max-width: 80px;
+    }
+
+    .line-total {
+        font-weight: 600;
+        color: var(--primary-color);
+        text-align: right !important;
+        padding-right: 1rem !important;
+    }
 
     .btn {
         background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
@@ -257,11 +264,13 @@
         transition: all 0.2s ease;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.5rem;
         text-decoration: none;
         box-shadow: var(--shadow-sm);
         position: relative;
         overflow: hidden;
+        white-space: nowrap;
     }
 
     .btn::before {
@@ -287,6 +296,17 @@
     .btn:active {
         transform: translateY(0);
     }
+
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn:disabled:hover {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+    }
     
     .btn-group {
         display: flex;
@@ -294,6 +314,7 @@
         align-items: center;
         margin-top: 2rem;
         gap: 1rem;
+        flex-wrap: wrap;
     }
 
     .btn.danger { 
@@ -306,6 +327,12 @@
 
     .btn.warning { 
         background: linear-gradient(135deg, var(--warning-color), #b45309); 
+    }
+
+    .btn.small {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        min-width: 70px;
     }
 
     .page { 
@@ -422,7 +449,7 @@
         border-radius: var(--border-radius-sm);
         margin-top: 1.5rem;
         border: 2px solid var(--border-color);
-        max-height: 70vh;
+        max-height: 70vh; /* Re-set to prevent excessive content display on screen */
         overflow-y: auto;
         box-shadow: var(--shadow-md);
     }
@@ -489,10 +516,6 @@
             padding: 1.5rem 1rem;
         }
 
-        .header img {
-            height: 100px;
-        }
-
         .header h1 {
             font-size: 1.875rem;
         }
@@ -512,39 +535,30 @@
         }
 
         .btn-group {
-            flex-direction: column-reverse;
+            flex-direction: column;
             gap: 0.75rem;
         }
 
         .btn-group .btn {
             width: 100%;
-            justify-content: center;
         }
 
-        table {
+        /* Mobile Services Table */
+        .services-table {
+            min-width: 600px;
             font-size: 0.875rem;
         }
 
-        th, td {
-            padding: 0.75rem 0.5rem;
+        .services-table th, .services-table td {
+            padding: 0.6rem 0.4rem;
         }
-        
-        /* Services table mobile optimization */
-        #servicesTable {
-            font-size: 0.8rem;
-        }
-        
-        #servicesTable th, #servicesTable td {
-            padding: 0.5rem 0.25rem;
-        }
-        
-        #servicesTable input {
-            padding: 0.5rem;
+
+        .services-table input {
+            padding: 0.4rem;
             font-size: 0.8rem;
         }
 
         .tabs {
-            justify-content: flex-start;
             padding: 0.25rem;
         }
 
@@ -587,16 +601,12 @@
 
         input, textarea, select {
             padding: 0.75rem;
-            font-size: 16px;
+            font-size: 16px; /* Prevents zoom on iOS */
         }
 
         .btn {
             padding: 1rem;
             font-size: 0.875rem;
-        }
-
-        .header img {
-            height: 80px;
         }
 
         .header h1 {
@@ -607,12 +617,19 @@
             font-size: 1rem;
         }
 
-        #servicesTable {
-            font-size: 0.75rem;
+        /* Ultra Mobile Services Table */
+        .services-table {
+            min-width: 550px;
+            font-size: 0.8rem;
         }
 
-        #servicesTable th, #servicesTable td {
-            padding: 0.4rem 0.2rem;
+        .services-table th, .services-table td {
+            padding: 0.5rem 0.3rem;
+        }
+
+        .services-table input {
+            padding: 0.35rem;
+            font-size: 0.75rem;
         }
 
         .transaction-item {
@@ -626,201 +643,7 @@
         }
     }
 
-    /* PDF Invoice Styles */
-    .pdf-invoice {
-        width: 210mm;
-        padding: 15mm;
-        margin: 0 auto;
-        background: white;
-        font-family: Arial, sans-serif;
-        font-size: 11pt;
-        line-height: 1.4;
-        color: #333;
-        box-sizing: border-box;
-    }
-
-    .services-table, .transactions-table, .totals-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 10px 0;
-        page-break-inside: auto;
-    }
-
-    .invoice-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #2563eb;
-    }
-
-    .invoice-header .left {
-        flex: 0 0 60%;
-    }
-
-    .invoice-header .right {
-        flex: 0 0 40%;
-        text-align: right;
-    }
-
-    .company-info h1 {
-        color: #2563eb;
-        font-size: 24pt;
-        font-weight: bold;
-        margin: 0 0 5px 0;
-    }
-
-    .company-details {
-        font-size: 9pt;
-        color: #666;
-        line-height: 1.6;
-    }
-
-    .contact-info {
-        margin-top: 8px;
-    }
-
-    .contact-row {
-        margin-bottom: 3px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .invoice-title h2 {
-        font-size: 28pt;
-        color: #2563eb;
-        margin: 0;
-        font-weight: bold;
-    }
-
-    .invoice-number {
-        font-size: 11pt;
-        margin-top: 5px;
-        color: #666;
-    }
-
-    .billing-section {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .bill-to, .invoice-dates {
-        width: 48%;
-    }
-
-    .section-title {
-        color: #2563eb;
-        font-size: 11pt;
-        margin: 0 0 5px 0;
-        text-transform: uppercase;
-        font-weight: bold;
-    }
-
-    .client-name {
-        font-size: 12pt;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .client-details {
-        color: #666;
-        font-size: 10pt;
-        line-height: 1.4;
-    }
-
-    .services-section, .transactions-section {
-        margin: 15px 0;
-    }
-
-    .services-table, .transactions-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    .services-table th, .services-table td,
-    .transactions-table th, .transactions-table td {
-        padding: 10px 8px;
-        border: 1px solid #ddd;
-        font-size: 10pt;
-        text-align: left;
-    }
-
-    .services-table th, .transactions-table th {
-        background-color: #f5f5f5;
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #555;
-    }
-
-    .services-table td:nth-child(2),
-    .services-table th:nth-child(2),
-    .services-table td:nth-child(3),
-    .services-table th:nth-child(3),
-    .services-table td:nth-child(4),
-    .services-table th:nth-child(4),
-    .transactions-table td:nth-child(4),
-    .transactions-table th:nth-child(4) {
-        text-align: right;
-    }
-
-    .totals-section {
-        margin-top: 15px;
-        text-align: right;
-    }
-
-    .totals-table {
-        margin-left: auto;
-        width: 250px;
-        border-collapse: collapse;
-    }
-
-    .totals-table td {
-        padding: 6px 12px;
-        border-bottom: 1px solid #ddd;
-        font-size: 10pt;
-    }
-
-    .totals-table td:first-child {
-        text-align: right;
-        color: #666;
-    }
-
-    .totals-table td:last-child {
-        text-align: right;
-        font-weight: bold;
-    }
-
-    .total-due {
-        background-color: #2563eb !important;
-        color: white !important;
-    }
-
-    .total-due td {
-        border-bottom: none !important;
-        font-size: 12pt !important;
-        font-weight: bold !important;
-        color: white !important;
-    }
-
-    .footer-section {
-        margin-top: 25px;
-        padding-top: 15px;
-        border-top: 1px solid #ddd;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .thank-you {
-        color: #2563eb;
-        font-weight: bold;
-        font-size: 12pt;
-        text-align: right;
-    }
-
+    /* Modal Styles */
     .modal {
         display: none;
         position: fixed;
@@ -910,100 +733,282 @@
         }
     }
 
+    /* PDF Styles */
+    .pdf-invoice {
+        width: 210mm;
+        padding: 15mm;
+        margin: 0 auto;
+        background: white;
+        font-family: Arial, sans-serif;
+        font-size: 11pt;
+        line-height: 1.4;
+        color: #333;
+        box-sizing: border-box;
+    }
+
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #2563eb;
+    }
+
+    .invoice-header .left {
+        flex: 0 0 60%;
+    }
+
+    .invoice-header .right {
+        flex: 0 0 40%;
+        text-align: right;
+    }
+
+    .company-info h1 {
+        color: #2563eb;
+        font-size: 24pt;
+        font-weight: bold;
+        margin: 0 0 5px 0;
+    }
+
+    .company-details {
+        font-size: 9pt;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .contact-info {
+        margin-top: 8px;
+    }
+
+    .contact-row {
+        margin-bottom: 3px;
+    }
+
+    .invoice-title h2 {
+        font-size: 28pt;
+        color: #2563eb;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .invoice-number {
+        font-size: 11pt;
+        margin-top: 5px;
+        color: #666;
+    }
+
+    .billing-section {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .bill-to, .invoice-dates {
+        width: 48%;
+    }
+
+    .section-title {
+        color: #2563eb;
+        font-size: 11pt;
+        margin: 0 0 5px 0;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .client-name {
+        font-size: 12pt;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .client-details {
+        color: #666;
+        font-size: 10pt;
+        line-height: 1.4;
+    }
+
+    .services-section, .transactions-section {
+        margin: 15px 0;
+    }
+
+    .pdf-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .pdf-table th, .pdf-table td {
+        padding: 10px 8px;
+        border: 1px solid #ddd;
+        font-size: 10pt;
+        text-align: left;
+    }
+
+    .pdf-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #555;
+    }
+
+    .pdf-table td:nth-child(2),
+    .pdf-table th:nth-child(2),
+    .pdf-table td:nth-child(3),
+    .pdf-table th:nth-child(3),
+    .pdf-table td:nth-child(4),
+    .pdf-table th:nth-child(4) {
+        text-align: right;
+    }
+
+    .totals-section {
+        margin-top: 15px;
+        text-align: right;
+    }
+
+    .totals-table {
+        margin-left: auto;
+        width: 250px;
+        border-collapse: collapse;
+    }
+
+    .totals-table td {
+        padding: 6px 12px;
+        border-bottom: 1px solid #ddd;
+        font-size: 10pt;
+    }
+
+    .totals-table td:first-child {
+        text-align: right;
+        color: #666;
+    }
+
+    .totals-table td:last-child {
+        text-align: right;
+        font-weight: bold;
+    }
+
+    .total-due {
+        background-color: #2563eb !important;
+        color: white !important;
+    }
+
+    .total-due td {
+        border-bottom: none !important;
+        font-size: 12pt !important;
+        font-weight: bold !important;
+        color: white !important;
+    }
+
+    .footer-section {
+        margin-top: 25px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .thank-you {
+        color: #2563eb;
+        font-weight: bold;
+        font-size: 12pt;
+        text-align: right;
+    }
+
 </style>
 </head>
 <body>
 
 <div class="container" id="invoiceArea">
-
   <div class="header">
     <div class="header-content">
-      <img src="logo.png" alt="Company Logo">
       <h1>Professional Invoice System</h1>
-      <p>manikshan foreign employment</p>
+      <p>Manikshan Foreign Employment</p>
     </div>
   </div>
 
   <div class="main-content">
     <div class="tabs">
-      <div class="tab active" onclick="showPageById('detailsPage', this)">Details</div>
-      <div class="tab" onclick="showPageById('servicesPage', this)">Services</div>
-      <div class="tab" onclick="showPageById('transactionsPage', this)">Transactions</div>
-      <div class="tab" onclick="showPageById('previewPage', this)">Preview</div>
+      <div class="tab active" onclick="showPage('detailsPage', this)">Details</div>
+      <div class="tab" onclick="showPage('servicesPage', this)">Services</div>
+      <div class="tab" onclick="showPage('transactionsPage', this)">Transactions</div>
+      <div class="tab" onclick="showPage('previewPage', this)">Preview</div>
     </div>
 
     <div class="page active" id="detailsPage">
       <h2>Client Information</h2>
       <div class="form-grid">
-          <div class="form-group">
-              <label for="invoiceNo">Invoice / File Number</label>
-              <input type="text" id="invoiceNo" placeholder="e.g., INV-2025-001">
-          </div>
-          <div class="form-group">
-              <label for="passport">Passport Number</label>
-              <input type="text" id="passport" placeholder="e.g., N1234567">
-          </div>
-          <div class="form-group">
-              <label for="fullName">Full Name</label>
-              <input type="text" id="fullName" placeholder="e.g., John Doe">
-          </div>
-          <div class="form-group">
-              <label for="contact">Contact Number</label>
-              <input type="text" id="contact" placeholder="e.g., +94 77 123 4567">
-          </div>
+        <div class="form-group">
+          <label for="invoiceNo">Invoice / File Number</label>
+          <input type="text" id="invoiceNo" placeholder="e.g., INV-2025-001">
+        </div>
+        <div class="form-group">
+          <label for="passport">Passport Number</label>
+          <input type="text" id="passport" placeholder="e.g., N1234567">
+        </div>
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="e.g., John Doe">
+        </div>
+        <div class="form-group">
+          <label for="contact">Contact Number</label>
+          <input type="text" id="contact" placeholder="e.g., +94 77 123 4567">
+        </div>
       </div>
       
       <div class="form-group">
-          <label for="address">Complete Address</label>
-          <textarea id="address" placeholder="Enter client's full address including city, postal code, and country"></textarea>
+        <label for="address">Complete Address</label>
+        <textarea id="address" placeholder="Enter client's full address including city, postal code, and country"></textarea>
       </div>
 
       <h2>Important Dates & Amounts</h2>
       <div class="dates-grid">
-          <div class="form-group">
-              <label for="issuedDate">Issue Date</label>
-              <input type="date" id="issuedDate">
-          </div>
-          <div class="form-group">
-              <label for="dueDate">Due Date</label>
-              <input type="date" id="dueDate">
-          </div>
-          <div class="form-group">
-              <label for="paymentMade">Payment Made Date</label>
-              <input type="date" id="paymentMade">
-          </div>
-          <div class="form-group">
-              <label for="dueAmountField">Due Amount (LKR)</label>
-              <input type="number" id="dueAmountField" placeholder="0.00" step="0.01" min="0" oninput="updateDueAmountFromInput()">
-          </div>
+        <div class="form-group">
+          <label for="issuedDate">Issue Date</label>
+          <input type="date" id="issuedDate">
+        </div>
+        <div class="form-group">
+          <label for="dueDate">Due Date</label>
+          <input type="date" id="dueDate">
+        </div>
+        <div class="form-group">
+          <label for="paymentMade">Payment Made Date</label>
+          <input type="date" id="paymentMade">
+        </div>
+        <div class="form-group">
+          <label for="dueAmountField">Due Amount (LKR)</label>
+          <input type="number" id="dueAmountField" placeholder="0.00" step="0.01" min="0">
+        </div>
       </div>
       
       <div class="btn-group">
-          <button class="btn" onclick="navigateTo('servicesPage')">
-              Continue to Services
-          </button>
+        <div></div>
+        <button class="btn" onclick="showPage('servicesPage')">Continue to Services</button>
       </div>
     </div>
 
     <div class="page" id="servicesPage">
       <h2>Services & Products</h2>
-      <div style="overflow-x: auto;">
-        <table id="servicesTable">
-          <thead>
-            <tr>
-              <th>Service Description</th>
-              <th>Qty</th>
-              <th>Price (LKR)</th>
-              <th>Total (LKR)</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      
+      <div class="table-container">
+        <div class="table-scroll">
+          <table class="services-table">
+            <thead>
+              <tr>
+                <th>Service Description</th>
+                <th>Qty</th>
+                <th>Price (LKR)</th>
+                <th>Total (LKR)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="servicesTableBody">
+            </tbody>
+          </table>
+        </div>
       </div>
-      <button class="btn success" onclick="addServiceRow()">
-          Add New Service
-      </button>
+      
+      <button class="btn success" onclick="addServiceRow()">Add New Service</button>
       
       <div class="totals">
         <p>Subtotal: <span id="subTotal">0.00 LKR</span></p>
@@ -1011,57 +1016,51 @@
       </div>
       
       <div class="btn-group">
-          <button class="btn" onclick="navigateTo('detailsPage')">
-              Back to Details
-          </button>
-          <button class="btn" onclick="navigateTo('transactionsPage')">
-              Continue to Transactions
-          </button>
+        <button class="btn" onclick="showPage('detailsPage')">Back to Details</button>
+        <button class="btn" onclick="showPage('transactionsPage')">Continue to Transactions</button>
       </div>
     </div>
 
     <div class="page" id="transactionsPage">
       <h2>Record Payment Transaction</h2>
       <div class="form-grid">
-          <div class="form-group">
-              <label for="transDate">Transaction Date</label>
-              <input type="date" id="transDate">
-          </div>
-          <div class="form-group">
-              <label for="transAmount">Amount (LKR)</label>
-              <input type="number" id="transAmount" placeholder="0.00" step="0.01" min="0">
-          </div>
-          <div class="form-group">
-              <label for="transType">Transaction Type</label>
-              <select id="transType">
-                  <option value="Payment">Payment Received</option>
-                  <option value="Refund">Refund Issued</option>
-              </select>
-          </div>
-          <div class="form-group">
-              <label for="transMethod">Payment Method</label>
-              <input list="methodOptions" id="transMethod" placeholder="e.g., Cash, Bank Transfer, Card">
-              <datalist id="methodOptions">
-                  <option value="Cash Payment"></option>
-                  <option value="Credit/Debit Card"></option>
-                  <option value="Bank Transfer"></option>
-                  <option value="Online Payment"></option>
-                  <option value="Mobile Payment"></option>
-              </datalist>
-          </div>
+        <div class="form-group">
+          <label for="transDate">Transaction Date</label>
+          <input type="date" id="transDate">
+        </div>
+        <div class="form-group">
+          <label for="transAmount">Amount (LKR)</label>
+          <input type="number" id="transAmount" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+          <label for="transType">Transaction Type</label>
+          <select id="transType">
+            <option value="Payment">Payment Received</option>
+            <option value="Refund">Refund Issued</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="transMethod">Payment Method</label>
+          <input list="methodOptions" id="transMethod" placeholder="e.g., Cash, Bank Transfer, Card">
+          <datalist id="methodOptions">
+            <option value="Cash Payment"></option>
+            <option value="Credit/Debit Card"></option>
+            <option value="Bank Transfer"></option>
+            <option value="Online Payment"></option>
+            <option value="Mobile Payment"></option>
+          </datalist>
+        </div>
       </div>
       
       <div id="transactionError" class="error-message" style="display: none;"></div>
       
-      <button class="btn success" onclick="addTransaction()">
-          Record Transaction
-      </button>
+      <button class="btn success" onclick="addTransaction()">Record Transaction</button>
       
       <h2>Transaction History</h2>
       <div class="transaction-list" id="transList">
-          <div class="transaction-item" style="color: var(--text-light); text-align: center; border: 2px dashed var(--border-color); border-left: none;">
-              No transactions recorded yet
-          </div>
+        <div class="transaction-item" style="color: var(--text-light); text-align: center; border: 2px dashed var(--border-color); border-left: none;">
+          No transactions recorded yet
+        </div>
       </div>
       
       <div class="totals">
@@ -1070,38 +1069,29 @@
       </div>
       
       <div class="btn-group">
-          <button class="btn" onclick="navigateTo('servicesPage')">
-              Back to Services
-          </button>
-          <button class="btn" onclick="navigateTo('previewPage')">
-              Generate Preview
-          </button>
+        <button class="btn" onclick="showPage('servicesPage')">Back to Services</button>
+        <button class="btn" onclick="showPage('previewPage')">Generate Preview</button>
       </div>
     </div>
 
     <div class="page" id="previewPage">
       <h2>Invoice Preview & Download</h2>
       <div class="preview-box" id="previewContent">
-          <div style="text-align: center; padding: 3rem; color: var(--text-light);">
-              <h3>Invoice Preview</h3>
-              <p>Your invoice preview will appear here</p>
-          </div>
+        <div style="text-align: center; padding: 3rem; color: var(--text-light);">
+          <h3>Invoice Preview</h3>
+          <p>Your invoice preview will appear here</p>
+        </div>
       </div>
       
       <div class="btn-group">
-          <button class="btn" onclick="navigateTo('transactionsPage')">
-              Back to Transactions
-          </button>
-          <button class="btn danger" id="downloadBtn" onclick="generatePDF()">
-              Download PDF Invoice
-          </button>
+        <button class="btn" onclick="showPage('transactionsPage')">Back to Transactions</button>
+        <button class="btn danger" id="downloadBtn" onclick="generatePDF()">Download PDF Invoice</button>
       </div>
     </div>
-  </div>
 
+  </div>
 </div>
 
-<!-- Edit Transaction Modal -->
 <div id="editModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -1151,8 +1141,8 @@ const serviceOptions = [
     'Service Charge'
 ];
 
-// Initialization
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize the form
+document.addEventListener('DOMContentLoaded', function() {
     initializeForm();
 });
 
@@ -1167,206 +1157,180 @@ function initializeForm() {
 
     addServiceRow();
     renderTransactions();
-    updateDueAmountDisplay();
+    updateTotals();
 }
 
-// Due Amount Functions
-function updateDueAmountFromInput() {
-    calculateTotals();
-}
-
-function updateDueAmountDisplay() {
-    const grandTotal = parseFloat(document.getElementById("grandTotal").textContent.replace(' LKR', '')) || 0;
-    const totalPaid = transactions.filter(t => t.type === "Payment").reduce((sum, t) => sum + t.amount, 0);
-    const totalRefunded = transactions.filter(t => t.type === "Refund").reduce((sum, t) => sum + t.amount, 0);
-    const amountDue = grandTotal - totalPaid + totalRefunded;
+// Navigation Functions
+function showPage(pageId, tabElement = null) {
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
     
-    document.getElementById('dueAmountField').value = amountDue.toFixed(2);
-}
-
-// Notification System
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
     
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
-
-// Navigation
-function showPageById(id, tabEl = null) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    if (tabEl) {
-        tabEl.classList.add("active");
+    if (tabElement) {
+        tabElement.classList.add('active');
     } else {
-        const matchingTab = Array.from(document.querySelectorAll('.tab')).find(t => t.getAttribute('onclick') && t.getAttribute('onclick').includes(`'${id}'`));
-        if (matchingTab) matchingTab.classList.add('active');
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            if (tab.textContent.toLowerCase().includes(pageId.replace('Page', ''))) {
+                tab.classList.add('active');
+            }
+        });
     }
     
-    if (id === 'previewPage') {
+    if (pageId === 'previewPage') {
         generatePreviewContent();
     }
     
-    if (id === 'detailsPage') {
-        updateDueAmountDisplay();
-    }
+    updateTotals();
 }
 
-function navigateTo(pageId) {
-    calculateTotals();
-    updateDueAmountDisplay();
-    showPageById(pageId);
-}
-
-// Services Section
+// Services Management
 function addServiceRow(desc = '', qty = 1, price = 0) {
-    const tbody = document.querySelector("#servicesTable tbody");
-    const row = document.createElement("tr");
+    const tbody = document.getElementById('servicesTableBody');
+    const row = document.createElement('tr');
     
-    const opts = serviceOptions.map(o => `<option value="${o}"></option>`).join('');
+    const serviceOptionsHTML = serviceOptions.map(option => `<option value="${option}"></option>`).join('');
     
     row.innerHTML = `
         <td>
             <input list="serviceOptions" value="${desc}" oninput="calculateTotals()" placeholder="Enter service description">
-            <datalist id="serviceOptions">${opts}</datalist>
+            <datalist id="serviceOptions">${serviceOptionsHTML}</datalist>
         </td>
-        <td><input type="number" value="${qty}" min="1" step="1" oninput="calculateTotals()"></td>
-        <td><input type="number" value="${price.toFixed(2)}" min="0" step="0.01" oninput="calculateTotals()"></td>
-        <td class="lineTotal">0.00</td>
-        <td><button class="btn danger" onclick="this.closest('tr').remove(); calculateTotals();" style="padding: 0.5rem; justify-content: center; width: 50px;">Remove</button></td>`;
+        <td>
+            <input type="number" class="qty-input" value="${qty}" min="1" step="1" oninput="calculateTotals()">
+        </td>
+        <td>
+            <input type="number" value="${price.toFixed(2)}" min="0" step="0.01" oninput="calculateTotals()">
+        </td>
+        <td class="line-total">0.00</td>
+        <td>
+            <button class="btn danger small" onclick="removeServiceRow(this)">Remove</button>
+        </td>
+    `;
     
     tbody.appendChild(row);
     calculateTotals();
 }
 
+function removeServiceRow(button) {
+    button.closest('tr').remove();
+    calculateTotals();
+}
+
 function calculateTotals() {
-    const rows = document.querySelectorAll("#servicesTable tbody tr");
-    let subTotal = 0;
+    const rows = document.querySelectorAll('#servicesTableBody tr');
+    let subtotal = 0;
     
-    rows.forEach(r => {
-        const qty = parseFloat(r.children[1].querySelector('input').value) || 0;
-        const price = parseFloat(r.children[2].querySelector('input').value) || 0;
-        const total = qty * price;
-        r.querySelector(".lineTotal").textContent = total.toFixed(2);
-        subTotal += total;
+    rows.forEach(row => {
+        const qty = parseFloat(row.cells[1].querySelector('input').value) || 0;
+        const price = parseFloat(row.cells[2].querySelector('input').value) || 0;
+        const lineTotal = qty * price;
+        row.cells[3].textContent = formatCurrency(lineTotal);
+        subtotal += lineTotal;
     });
     
-    document.getElementById("subTotal").textContent = subTotal.toFixed(2) + ' LKR';
-    document.getElementById("grandTotal").textContent = subTotal.toFixed(2) + ' LKR';
-    updateAmountDue();
-    updateDueAmountDisplay();
+    document.getElementById('subTotal').textContent = formatCurrency(subtotal) + ' LKR';
+    document.getElementById('grandTotal').textContent = formatCurrency(subtotal) + ' LKR';
+    
+    updateTotals();
 }
 
-function updateAmountDue() {
-    const grandTotal = parseFloat(document.getElementById("grandTotal").textContent.replace(' LKR', '')) || 0;
-    const totalPaid = transactions.filter(t => t.type === "Payment").reduce((sum, t) => sum + t.amount, 0);
-    const totalRefunded = transactions.filter(t => t.type === "Refund").reduce((sum, t) => sum + t.amount, 0);
+function updateTotals() {
+    const grandTotal = parseFloat(document.getElementById('grandTotal').textContent.replace(/ LKR|,/g, '')) || 0;
+    
+    const totalPaid = transactions
+        .filter(t => t.type === 'Payment')
+        .reduce((sum, t) => sum + t.amount, 0);
+    const totalRefunded = transactions
+        .filter(t => t.type === 'Refund')
+        .reduce((sum, t) => sum + t.amount, 0);
+    
     const amountDue = grandTotal - totalPaid + totalRefunded;
-    document.getElementById("amountDue").textContent = amountDue.toFixed(2) + ' LKR';
+    
+    document.getElementById('totalPaid').textContent = formatCurrency(totalPaid) + ' LKR';
+    // This 'amountDue' span is the "Outstanding Balance" on the transactions page, which should still calculate for user reference.
+    document.getElementById('amountDue').textContent = formatCurrency(amountDue) + ' LKR';
+    // The 'dueAmountField' on the details page is now fully manual and is NOT updated here.
 }
 
-// Transactions Section
+// Transaction Management
 function addTransaction() {
     const errorEl = document.getElementById('transactionError');
-    const type = document.getElementById("transType").value;
-    const method = document.getElementById("transMethod").value.trim();
-    const date = document.getElementById("transDate").value;
-    const amount = parseFloat(document.getElementById("transAmount").value) || 0;
+    const type = document.getElementById('transType').value;
+    const method = document.getElementById('transMethod').value.trim();
+    const date = document.getElementById('transDate').value;
+    const amount = parseFloat(document.getElementById('transAmount').value) || 0;
 
     errorEl.style.display = 'none';
     
     if (!date || amount <= 0 || !method) {
-        errorEl.textContent = "Please fill in all transaction details with a valid amount greater than 0.";
+        errorEl.textContent = 'Please fill in all transaction details with a valid amount greater than 0.';
         errorEl.style.display = 'block';
         return;
     }
     
     transactions.push({ type, method, date, amount });
     renderTransactions();
-    updateAmountDue();
-    updateDueAmountDisplay();
+    updateTotals();
     
-    document.getElementById("paymentMade").value = date;
-    
-    document.getElementById("transMethod").value = '';
-    document.getElementById("transAmount").value = '';
+    document.getElementById('paymentMade').value = date;
+    document.getElementById('transMethod').value = '';
+    document.getElementById('transAmount').value = '';
     document.getElementById('transDate').value = new Date().toISOString().split('T')[0];
     
-    showNotification('Transaction recorded successfully!', 'success');
+    showNotification('Transaction recorded successfully!');
 }
 
 function renderTransactions() {
-    const list = document.getElementById("transList");
-    list.innerHTML = "";
+    const list = document.getElementById('transList');
+    list.innerHTML = '';
     
     if (transactions.length === 0) {
         list.innerHTML = `<div class="transaction-item" style="color: var(--text-light); text-align: center; border: 2px dashed var(--border-color); border-left: none;">No transactions recorded yet</div>`;
         return;
     }
     
-    transactions.forEach((t, index) => {
-        const item = document.createElement("div");
-        item.className = `transaction-item ${t.type.toLowerCase()}`;
-        const sign = t.type === 'Payment' ? '+' : '-';
-        const color = t.type === 'Payment' ? 'var(--success-color)' : 'var(--danger-color)';
-        const emoji = t.type === 'Payment' ? '💰' : '💸';
+    transactions.forEach((transaction, index) => {
+        const item = document.createElement('div');
+        item.className = `transaction-item ${transaction.type.toLowerCase()}`;
+        const sign = transaction.type === 'Payment' ? '' : '-';
+        const color = transaction.type === 'Payment' ? 'var(--success-color)' : 'var(--danger-color)';
         
         item.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                 <div style="flex: 1; min-width: 200px;">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">
-                        ${emoji} ${t.type} via ${t.method}
-                    </div>
-                    <div style="font-size: 0.875rem; color: var(--text-light);">
-                        ${formatDate(t.date)}
-                    </div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">${transaction.type} via ${transaction.method}</div>
+                    <div style="font-size: 0.875rem; color: var(--text-light);">${formatDate(transaction.date)}</div>
                 </div>
-                <div style="font-weight: 700; font-size: 1.125rem; color: ${color};">
-                    ${sign} ${t.amount.toFixed(2)} LKR
-                </div>
+                <div style="font-weight: 700; font-size: 1.125rem; color: ${color};">${sign} ${formatCurrency(transaction.amount)} LKR</div>
             </div>
             <div class="transaction-actions">
                 <button class="edit-btn" onclick="editTransaction(${index})">Edit</button>
                 <button class="delete-btn" onclick="deleteTransaction(${index})">Delete</button>
-            </div>`;
+            </div>
+        `;
         list.appendChild(item);
     });
-    
-    updateTotalPaidDisplay();
 }
 
 function editTransaction(index) {
     editingTransactionIndex = index;
     const transaction = transactions[index];
-    
     document.getElementById('editTransDate').value = transaction.date;
     document.getElementById('editTransAmount').value = transaction.amount.toFixed(2);
     document.getElementById('editTransType').value = transaction.type;
     document.getElementById('editTransMethod').value = transaction.method;
-    
     document.getElementById('editModal').style.display = 'block';
 }
 
 function deleteTransaction(index) {
-    if (confirm('Are you sure you want to delete this transaction? This action cannot be undone.')) {
+    if (confirm('Are you sure you want to delete this transaction?')) {
         transactions.splice(index, 1);
         renderTransactions();
-        updateAmountDue();
-        updateDueAmountDisplay();
-        showNotification('Transaction deleted successfully!', 'success');
+        updateTotals();
+        showNotification('Transaction deleted successfully!');
     }
-}
-
-function closeEditModal() {
-    document.getElementById('editModal').style.display = 'none';
-    editingTransactionIndex = -1;
 }
 
 function saveEditTransaction() {
@@ -1383,88 +1347,100 @@ function saveEditTransaction() {
     }
     
     transactions[editingTransactionIndex] = { type, method, date, amount };
-    
     renderTransactions();
-    updateAmountDue();
-    updateDueAmountDisplay();
+    updateTotals();
     closeEditModal();
-    showNotification('Transaction updated successfully!', 'success');
+    showNotification('Transaction updated successfully!');
 }
 
-// Close modal when clicking outside
+function closeEditModal() {
+    document.getElementById('editModal').style.display = 'none';
+    editingTransactionIndex = -1;
+}
+
 window.onclick = function(event) {
-    const modal = document.getElementById('editModal');
-    if (event.target == modal) {
+    if (event.target == document.getElementById('editModal')) {
         closeEditModal();
     }
 }
 
-function updateTotalPaidDisplay() {
-    const totalPaid = transactions.filter(t => t.type === "Payment").reduce((sum, t) => sum + t.amount, 0);
-    document.getElementById("totalPaid").textContent = totalPaid.toFixed(2) + ' LKR';
+// Utility Functions
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 
-// Preview & PDF Generation
+function formatCurrency(number) {
+    if (isNaN(number)) number = 0;
+    return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `<strong>${type === 'success' ? 'Success!' : 'Error!'}</strong> ${message}`;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+}
+
+// Preview and PDF Generation
 function generatePreviewContent() {
     const invoiceData = {
-        invNo: document.getElementById("invoiceNo").value || 'N/A',
-        fullName: document.getElementById("fullName").value || 'N/A',
-        address: document.getElementById("address").value || 'N/A',
-        passport: document.getElementById("passport").value || 'N/A',
-        contact: document.getElementById("contact").value || 'N/A',
-        issuedDate: formatDate(document.getElementById("issuedDate").value) || 'N/A',
-        dueDate: formatDate(document.getElementById("dueDate").value) || 'N/A',
-        paymentMade: formatDate(document.getElementById("paymentMade").value) || 'Not Set',
-        subTotal: document.getElementById("subTotal").textContent.replace(' LKR', ''),
-        grandTotal: document.getElementById("grandTotal").textContent.replace(' LKR', ''),
-        amountDue: document.getElementById("amountDue").textContent.replace(' LKR', ''),
+        invNo: document.getElementById('invoiceNo').value || 'N/A',
+        fullName: document.getElementById('fullName').value || 'N/A',
+        address: document.getElementById('address').value || 'N/A',
+        passport: document.getElementById('passport').value || 'N/A',
+        contact: document.getElementById('contact').value || 'N/A',
+        issuedDate: formatDate(document.getElementById('issuedDate').value) || 'N/A',
+        dueDate: formatDate(document.getElementById('dueDate').value) || 'N/A',
+        paymentMade: formatDate(document.getElementById('paymentMade').value) || 'Not Set',
+        grandTotal: document.getElementById('grandTotal').textContent.replace(' LKR', ''),
     };
 
-    let serviceRowsHTML = "";
-    document.querySelectorAll("#servicesTable tbody tr").forEach(r => {
-        const desc = r.children[0].querySelector('input').value;
-        const qty = r.children[1].querySelector('input').value;
-        const price = parseFloat(r.children[2].querySelector('input').value).toFixed(2);
-        const total = r.children[3].textContent;
-        if(desc) {
+    let serviceRowsHTML = '';
+    document.querySelectorAll('#servicesTableBody tr').forEach(row => {
+        const desc = row.cells[0].querySelector('input').value;
+        if (desc) {
+            const qty = row.cells[1].querySelector('input').value;
+            const price = formatCurrency(parseFloat(row.cells[2].querySelector('input').value) || 0);
+            const total = row.cells[3].textContent;
             serviceRowsHTML += `<tr><td>${desc}</td><td>${qty}</td><td>${price}</td><td>${total}</td></tr>`;
         }
     });
-    if (!serviceRowsHTML) {
-        serviceRowsHTML = `<tr><td colspan="4" style="text-align:center; padding: 15px; color: #888;">No services listed.</td></tr>`;
-    }
+    if (!serviceRowsHTML) serviceRowsHTML = `<tr><td colspan="4" style="text-align:center;">No services listed.</td></tr>`;
 
-    let transactionRowsHTML = "";
+    let transactionRowsHTML = '';
     if (transactions.length > 0) {
         transactions.forEach(t => {
-            transactionRowsHTML += `<tr><td>${formatDate(t.date)}</td><td>${t.type}</td><td>${t.method}</td><td>${t.amount.toFixed(2)}</td></tr>`;
+            const sign = t.type === 'Refund' ? '-' : '';
+            const amountText = `${sign}${formatCurrency(t.amount)}`;
+            transactionRowsHTML += `<tr><td>${formatDate(t.date)}</td><td>${t.type}</td><td>${t.method}</td><td style="color: ${t.type === 'Refund' ? '#dc2626' : '#059669'};">${amountText}</td></tr>`;
         });
     } else {
-        transactionRowsHTML = `<tr><td colspan="4" style="text-align:center; padding: 15px; color: #888;">No transactions recorded.</td></tr>`;
+        transactionRowsHTML = `<tr><td colspan="4" style="text-align:center;">No transactions recorded.</td></tr>`;
     }
     
-    const totalPaid = transactions.filter(t => t.type === "Payment").reduce((sum, t) => sum + t.amount, 0).toFixed(2);
+    const totalPaid = formatCurrency(transactions
+        .filter(t => t.type === 'Payment')
+        .reduce((sum, t) => sum + t.amount, 0));
+
+    // *** NEW: Get the manually entered due amount from the first page for the preview ***
+    const manualDueAmountValue = parseFloat(document.getElementById('dueAmountField').value) || 0;
+    const formattedDueAmount = formatCurrency(manualDueAmountValue);
 
     const previewHTML = `
-        <div class="pdf-invoice">
+        <div class="pdf-invoice" id="printable-invoice-content">
             <div class="invoice-header">
                 <div class="left">
                     <div class="company-info">
                         <h1>MANIKSHAN FOREIGN EMPLOYMENT</h1>
                         <div class="company-details">
                             <div class="contact-info">
-                                <div class="contact-row">
-                                    <span><strong>Tel (Sri Lanka):</strong> +94 77 586 4956</span>
-                                </div>
-                                <div class="contact-row">
-                                    <span><strong>Tel (USA):</strong> +1 951-987-1313</span>
-                                </div>
-                                <div class="contact-row">
-                                    <span><strong>Tel (Australia):</strong> +61 431 106 500</span>
-                                </div>
-                                <div class="contact-row">
-                                    <span><strong>Email:</strong> info@manikshanforeignemployment.com</span>
-                                </div>
+                                <div class="contact-row"><span><strong>Tel (Sri Lanka):</strong> +94 77 586 4956</span></div>
+                                <div class="contact-row"><span><strong>Tel (USA):</strong> +1 951-987-1313</span></div>
+                                <div class="contact-row"><span><strong>Tel (Australia):</strong> +61 431 106 500</span></div>
+                                <div class="contact-row"><span><strong>Email:</strong> info@manikshanforeignemployment.com</span></div>
                             </div>
                         </div>
                     </div>
@@ -1476,7 +1452,6 @@ function generatePreviewContent() {
                     </div>
                 </div>
             </div>
-
             <div class="billing-section">
                 <div class="bill-to">
                     <div class="section-title">Bill To</div>
@@ -1495,151 +1470,86 @@ function generatePreviewContent() {
                     </div>
                 </div>
             </div>
-
             <div class="services-section">
                 <div class="section-title">Services & Products</div>
-                <table class="services-table">
-                    <thead>
-                        <tr><th>Description</th><th>Qty</th><th>Price (LKR)</th><th>Total (LKR)</th></tr>
-                    </thead>
+                <table class="pdf-table">
+                    <thead><tr><th>Description</th><th>Qty</th><th>Price (LKR)</th><th>Total (LKR)</th></tr></thead>
                     <tbody>${serviceRowsHTML}</tbody>
                 </table>
             </div>
-
             <div class="totals-section">
                 <table class="totals-table">
                     <tr><td>Subtotal:</td><td>${invoiceData.grandTotal} LKR</td></tr>
                     <tr><td>Total Paid:</td><td>${totalPaid} LKR</td></tr>
-                    <tr class="total-due"><td>Amount Due:</td><td>${invoiceData.amountDue} LKR</td></tr>
+                    <tr class="total-due"><td>Amount Due:</td><td>${formattedDueAmount} LKR</td></tr>
                 </table>
             </div>
-
             <div class="transactions-section">
                 <div class="section-title">Payment History</div>
-                <table class="transactions-table">
-                    <thead>
-                        <tr><th>Date</th><th>Type</th><th>Method</th><th>Amount (LKR)</th></tr>
-                    </thead>
+                <table class="pdf-table">
+                    <thead><tr><th>Date</th><th>Type</th><th>Method</th><th>Amount (LKR)</th></tr></thead>
                     <tbody>${transactionRowsHTML}</tbody>
                 </table>
             </div>
-
             <div class="footer-section">
-                <div style="flex: 1;">
-                    <div style="font-size: 9pt; color: #666;">
-                        <strong>Payment Terms:</strong> Payment due within 30 days of invoice date.<br>
-                        <strong>Note:</strong> Late payments may incur additional charges.
-                    </div>
-                </div>
-                <div class="thank-you">
-                    Thank you for<br>choosing our services!
-                </div>
+                <div style="flex: 1;"><div style="font-size: 9pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 30 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
+                <div class="thank-you">Thank you for<br>choosing our services!</div>
             </div>
-        </div>`;
+        </div>
+    `;
     
-    document.getElementById("previewContent").innerHTML = previewHTML;
-}
-
-function formatDate(dateString) {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-    });
+    document.getElementById('previewContent').innerHTML = previewHTML;
 }
 
 function generatePDF() {
-    const previewContent = document.getElementById("previewContent");
-    const downloadBtn = document.getElementById("downloadBtn");
+    const previewContentWrapper = document.getElementById('previewContent');
+    const pdfElement = previewContentWrapper.querySelector('.pdf-invoice');
+    const downloadBtn = document.getElementById('downloadBtn');
     
-    if (!previewContent.innerHTML.trim() || previewContent.innerHTML.includes('Your invoice preview will appear here')) {
-        alert("Please ensure all invoice details are filled out correctly before downloading.");
+    if (!pdfElement) {
+        alert('Invoice content not found. Please generate the preview first.');
         return;
     }
-
+    
     downloadBtn.innerHTML = 'Generating PDF...';
     downloadBtn.disabled = true;
+
+    const originalStyle = { maxHeight: previewContentWrapper.style.maxHeight, overflowY: previewContentWrapper.style.overflowY };
+    previewContentWrapper.style.maxHeight = 'none';
+    previewContentWrapper.style.overflowY = 'visible';
     
-    const invoiceNumber = document.getElementById("invoiceNo").value || 'Invoice';
-    const clientName = document.getElementById("fullName").value || 'Client';
-    
-    const contentHeight = previewContent.querySelector('.pdf-invoice').offsetHeight + 100;
+    const contentHeightPx = pdfElement.offsetHeight;
+    const A4_HEIGHT_PX = (297 / 25.4) * 96; 
+    let requiredScale = (contentHeightPx > A4_HEIGHT_PX) ? A4_HEIGHT_PX / contentHeightPx : 1;
+
+    const invoiceNumber = document.getElementById('invoiceNo').value || 'Invoice';
+    const clientName = document.getElementById('fullName').value || 'Client';
 
     const opt = {
-        margin: 0,
+        margin: [5, 5, 5, 5], 
         filename: `${invoiceNumber}_${clientName.replace(/\s+/g, '_')}.pdf`,
-        image: { 
-            type: 'jpeg', 
-            quality: 0.98 
-        },
-        html2canvas: { 
-            scale: 2,
-            useCORS: true,
-            letterRendering: true,
-            allowTaint: false,
-            scrollX: 0,
-            scrollY: 0,
-            height: contentHeight
-        },
-        jsPDF: { 
-            unit: 'mm', 
-            format: 'a4',
-            orientation: 'portrait',
-            compress: true
-        }
+        image: { type: 'jpeg', quality: 1.0 },
+        html2canvas: { scale: 2 * requiredScale, useCORS: true, letterRendering: true, windowHeight: contentHeightPx, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: 'avoid-all' }
     };
 
-    try {
-        html2pdf()
-            .set(opt)
-            .from(previewContent.querySelector('.pdf-invoice'))
-            .toPdf()
-            .get('pdf')
-            .then(function(pdf) {
-                pdf.setProperties({
-                    title: `Invoice ${invoiceNumber}`,
-                    subject: `Invoice for ${clientName}`,
-                    author: 'Manikshan Foreign Employment',
-                    creator: 'Professional Invoice System'
-                });
-                pdf.save(`${invoiceNumber}_${clientName.replace(/\s+/g, '_')}.pdf`);
-            })
-            .finally(() => {
-                downloadBtn.innerHTML = 'Download PDF Invoice';
-                downloadBtn.disabled = false;
-                showNotification('PDF downloaded successfully!', 'success');
-            });
-    } catch (error) {
-        console.error('PDF generation failed:', error);
+    html2pdf().set(opt).from(pdfElement).save().then(() => {
+        showNotification('PDF downloaded successfully!');
+    }).catch(err => {
+        console.error('PDF generation failed:', err);
         alert('Failed to generate PDF. Please try again.');
+    }).finally(() => {
+        previewContentWrapper.style.maxHeight = originalStyle.maxHeight;
+        previewContentWrapper.style.overflowY = originalStyle.overflowY;
         downloadBtn.innerHTML = 'Download PDF Invoice';
         downloadBtn.disabled = false;
-    }
+    });
 }
 
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    if (e.ctrlKey || e.metaKey) {
-        switch(e.key) {
-            case 's':
-                e.preventDefault();
-                break;
-            case 'p':
-                e.preventDefault();
-                if (document.querySelector('.page.active').id === 'previewPage') {
-                    generatePDF();
-                }
-                break;
-        }
-    }
-    
-    if (e.key === 'Escape') {
-        closeEditModal();
-    }
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeEditModal();
 });
-
 </script>
 </body>
 </html>
