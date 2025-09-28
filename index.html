@@ -851,7 +851,7 @@
     }
 
     .company-info h1 {
-        color: #1f2937;
+        color: darkgoldenrod;
         font-size: 18pt;
         font-weight: bold;
         margin: 0 0 3px 0;
@@ -976,15 +976,15 @@
     }
 
     .total-due {
-        background-color: #1f2937 !important;
-        color: white !important;
+        background-color: darkgoldenrod !important;
+        color: black !important;
     }
 
     .total-due td {
         border-bottom: none !important;
         font-size: 9pt !important;
         font-weight: bold !important;
-        color: white !important;
+        color: black !important;
     }
 
     .footer-section {
@@ -1062,6 +1062,10 @@
         <div class="form-group">
           <label for="paymentMade">Payment Made Date</label>
           <input type="date" id="paymentMade">
+        </div>
+        <div class="form-group">
+            <label for="subTotalField">Subtotal Override (LKR)</label>
+            <input type="number" id="subTotalField" placeholder="Auto-calculated from Services" step="0.01">
         </div>
         <div class="form-group">
           <label for="dueAmountField">Due Amount (LKR)</label>
@@ -1351,6 +1355,12 @@ function calculateTotals() {
     
     document.getElementById('subTotal').textContent = formatCurrency(subtotal) + ' LKR';
     document.getElementById('grandTotal').textContent = formatCurrency(subtotal) + ' LKR';
+
+    // Update the subtotal override field on the details page
+    const subtotalField = document.getElementById('subTotalField');
+    if (subtotalField) {
+        subtotalField.value = subtotal.toFixed(2);
+    }
     
     updateTotals();
 }
@@ -1503,8 +1513,7 @@ function generatePreviewContent() {
         contact: document.getElementById('contact').value || 'N/A',
         issuedDate: formatDate(document.getElementById('issuedDate').value) || 'N/A',
         dueDate: formatDate(document.getElementById('dueDate').value) || 'N/A',
-        paymentMade: formatDate(document.getElementById('paymentMade').value) || 'Not Set',
-        grandTotal: document.getElementById('grandTotal').textContent.replace(' LKR', ''),
+        paymentMade: formatDate(document.getElementById('paymentMade').value) || 'Not Set'
     };
 
     let serviceRowsHTML = '';
@@ -1522,13 +1531,13 @@ function generatePreviewContent() {
             let descriptionStyle = '';
             
             if (isPaid) {
-                statusCell = '<span style="color: #1e293b; font-weight: bold; font-size: 10pt;">● PAID</span>';
+                statusCell = '<span style="color: #10b981; font-size: 11pt; font-family: DejaVu Sans, sans-serif;">✔ <b>Paid<b></span>';
                 descriptionStyle = 'color: #1e293b; font-weight: bold;';
             } else if (isDue) {
-                statusCell = '<span style="color: #1e293b; font-weight: bold; font-size: 10pt;">● DUE</span>';
+                statusCell = '<span style="color: #f59e0b; font-size: 11pt; font-family: DejaVu Sans, sans-serif;">❗<b>Due<b> </span>';
                 descriptionStyle = 'color: #1e293b; font-weight: bold;';
             } else {
-                statusCell = '<span style="color: #64748b; font-size: 9pt;">Pending</span>';
+                statusCell = '<span style="color: #64748b; font-size: 8pt;">Pending</span>';
             }
             
             serviceRowsHTML += `<tr><td style="${descriptionStyle}">${desc}</td><td>${qty}</td><td>${price}</td><td>${total}</td><td style="text-align: center;">${statusCell}</td></tr>`;
@@ -1541,7 +1550,7 @@ function generatePreviewContent() {
         transactions.forEach(t => {
             const sign = t.type === 'Refund' ? '-' : '';
             const amountText = `${sign}${formatCurrency(t.amount)}`;
-            transactionRowsHTML += `<tr><td>${formatDate(t.date)}</td><td>${t.type}</td><td>${t.method}</td><td style="color: ${t.type === 'Refund' ? '#dc2626' : '#10b981'};">${amountText}</td></tr>`;
+            transactionRowsHTML += `<tr><td>${formatDate(t.date)}</td><td>${t.type}</td><td>${t.method}</td><td style="color: ${t.type === 'Refund' ? '#dc2626' : '#000000'}; font-weight: bold;">${amountText}</td></tr>`;
         });
     } else {
         transactionRowsHTML = `<tr><td colspan="4" style="text-align:center;">No transactions recorded.</td></tr>`;
@@ -1551,6 +1560,9 @@ function generatePreviewContent() {
         .filter(t => t.type === 'Payment')
         .reduce((sum, t) => sum + t.amount, 0));
 
+    // Get values from manual override fields
+    const subtotalOverrideValue = parseFloat(document.getElementById('subTotalField').value) || 0;
+    const formattedSubtotal = formatCurrency(subtotalOverrideValue);
     const manualDueAmountValue = parseFloat(document.getElementById('dueAmountField').value) || 0;
     const formattedDueAmount = formatCurrency(manualDueAmountValue);
 
@@ -1559,7 +1571,7 @@ function generatePreviewContent() {
             <div class="invoice-header">
                 <div class="left">
                     <div class="company-info">
-                        <h1>MANIKSHAN FOREIGN EMPLOYMENT (PVT) LTD </h1>
+                        <h1 style="color: darkgoldenrod;">MANIKSHAN FOREIGN EMPLOYMENT (PVT) LTD </h1>
                         <div class="company-details">
                             <div class="contact-info">
                                 <div class="contact-row"><span><strong>Tel (Sri Lanka):</strong> +94 77 586 4956</span></div>
@@ -1604,7 +1616,7 @@ function generatePreviewContent() {
             </div>
             <div class="totals-section">
                 <table class="totals-table">
-                    <tr><td>Subtotal:</td><td>3,500,000.00 LKR</td></tr>
+                    <tr><td>Subtotal:</td><td>${formattedSubtotal} LKR</td></tr>
                     <tr><td>Total Paid:</td><td>${totalPaid} LKR</td></tr>
                     <tr class="total-due"><td>Amount Due:</td><td>${formattedDueAmount} LKR</td></tr>
                 </table>
@@ -1617,7 +1629,7 @@ function generatePreviewContent() {
                 </table>
             </div>
             <div class="footer-section">
-                <div style="flex: 1;"><div style="font-size: 9pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 7 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
+                <div style="flex: 1;"><div style="font-size: 8pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 30 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
                 <div class="thank-you">Thank you for<br>choosing our services!</div>
             </div>
         </div>
