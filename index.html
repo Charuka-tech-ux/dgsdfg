@@ -1019,7 +1019,7 @@
     <div class="tabs">
       <div class="tab active" onclick="showPage('detailsPage', this)">Details</div>
       <div class="tab" onclick="showPage('servicesPage', this)">Services</div>
-      <div class="tab" onclick="showPage('transactionsPage', this)">Transactions</div>
+      <div class="tab" onclick="showPage('transactionsPage', this)">Transactions History </div>
       <div class="tab" onclick="showPage('previewPage', this)">Preview</div>
     </div>
 
@@ -1070,6 +1070,10 @@
         <div class="form-group">
           <label for="dueAmountField">Due Amount (LKR)</label>
           <input type="number" id="dueAmountField" placeholder="0.00" step="0.01" min="0">
+        </div>
+        <div class="form-group">
+            <label for="footerFontSize">Footer Font Size (pt)</label>
+            <input type="number" id="footerFontSize" placeholder="e.g., 8" value="8" min="1">
         </div>
       </div>
       
@@ -1565,6 +1569,7 @@ function generatePreviewContent() {
     const formattedSubtotal = formatCurrency(subtotalOverrideValue);
     const manualDueAmountValue = parseFloat(document.getElementById('dueAmountField').value) || 0;
     const formattedDueAmount = formatCurrency(manualDueAmountValue);
+    const footerFontSize = document.getElementById('footerFontSize').value || 8;
 
     const previewHTML = `
         <div class="pdf-invoice" id="printable-invoice-content">
@@ -1622,14 +1627,14 @@ function generatePreviewContent() {
                 </table>
             </div>
             <div class="transactions-section">
-                <div class="section-title">Transactions</div>
+                <div class="section-title">Transactions History  </div>
                 <table class="pdf-table">
                     <thead><tr><th>Date</th><th>Type</th><th>Method</th><th>Amount (LKR)</th></tr></thead>
                     <tbody>${transactionRowsHTML}</tbody>
                 </table>
             </div>
             <div class="footer-section">
-                <div style="flex: 1;"><div style="font-size: 8pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 30 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
+                <div style="flex: 1;"><div style="font-size: ${footerFontSize}pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 7 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
                 <div class="thank-you">Thank you for<br>choosing our services!</div>
             </div>
         </div>
