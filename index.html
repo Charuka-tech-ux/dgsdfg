@@ -243,13 +243,13 @@
     
     /* Styles for Paid/Due status on service description */
     .service-paid {
-        color: var(--paid-color) !important;
+        color: var(--text-dark) !important;
         font-weight: 600;
         position: relative;
     }
 
     .service-due {
-        color: var(--due-color) !important;
+        color: var(--text-dark) !important;
         font-weight: 600;
     }
 
@@ -1522,11 +1522,11 @@ function generatePreviewContent() {
             let descriptionStyle = '';
             
             if (isPaid) {
-                statusCell = '<span style="color: #dc2626; font-weight: bold; font-size: 10pt;">● PAID</span>';
-                descriptionStyle = 'color: #dc2626; font-weight: bold;';
+                statusCell = '<span style="color: #1e293b; font-weight: bold; font-size: 10pt;">● PAID</span>';
+                descriptionStyle = 'color: #1e293b; font-weight: bold;';
             } else if (isDue) {
-                statusCell = '<span style="color: #f59e0b; font-weight: bold; font-size: 10pt;">● DUE</span>';
-                descriptionStyle = 'color: #f59e0b; font-weight: bold;';
+                statusCell = '<span style="color: #1e293b; font-weight: bold; font-size: 10pt;">● DUE</span>';
+                descriptionStyle = 'color: #1e293b; font-weight: bold;';
             } else {
                 statusCell = '<span style="color: #64748b; font-size: 9pt;">Pending</span>';
             }
@@ -1617,7 +1617,7 @@ function generatePreviewContent() {
                 </table>
             </div>
             <div class="footer-section">
-                <div style="flex: 1;"><div style="font-size: 9pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 30 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
+                <div style="flex: 1;"><div style="font-size: 9pt; color: #666;"><strong>Payment Terms:</strong> Payment due within 7 days.<br><strong>Note:</strong> Late payments may incur charges.</div></div>
                 <div class="thank-you">Thank you for<br>choosing our services!</div>
             </div>
         </div>
