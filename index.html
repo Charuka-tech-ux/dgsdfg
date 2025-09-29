@@ -15,9 +15,9 @@
         --danger-color: #dc2626;
         --danger-hover: #b91c1c;
         --success-color: #10b981;
-        --warning-color: #f59e0b;
+        --warning-color: #181611;
         --paid-color: #dc2626;
-        --due-color: #f59e0b;
+        --due-color: #171106;
         --text-dark: #1e293b;
         --text-medium: #475569;
         --text-light: #64748b;
@@ -693,7 +693,7 @@
             font-size: 0.875rem;
         }
 
-        .header h1 {
+    .header h1 {
             font-size: 1.5rem;
         }
 
@@ -826,7 +826,7 @@
         font-family: Arial, sans-serif;
         font-size: 9pt;
         line-height: 1.3;
-        color: #333;
+        color: #151414;
         box-sizing: border-box;
         position: relative;
         left: 50%;
@@ -838,7 +838,7 @@
         justify-content: space-between;
         margin-bottom: 15px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #1f2937;
+        border-bottom: 2px solid #101011;
     }
 
     .invoice-header .left {
@@ -851,7 +851,7 @@
     }
 
     .company-info h1 {
-        color: darkgoldenrod;
+        color: rgb(211, 21, 21);
         font-size: 18pt;
         font-weight: bold;
         margin: 0 0 3px 0;
@@ -976,7 +976,7 @@
     }
 
     .total-due {
-        background-color: darkgoldenrod !important;
+        background-color: rgb(54, 54, 52) !important;
         color: black !important;
     }
 
@@ -984,7 +984,7 @@
         border-bottom: none !important;
         font-size: 9pt !important;
         font-weight: bold !important;
-        color: black !important;
+        color: rgb(248, 240, 240) !important;
     }
 
     .footer-section {
@@ -1535,10 +1535,10 @@ function generatePreviewContent() {
             let descriptionStyle = '';
             
             if (isPaid) {
-                statusCell = '<span style="color: #10b981; font-size: 11pt; font-family: DejaVu Sans, sans-serif;">✔ <b>Paid<b></span>';
+                statusCell = '<span style="color: #10b981; font-size: 11pt; font-family: DejaVu Sans, sans-serif;">✅ <b>Paid<b></span>';
                 descriptionStyle = 'color: #1e293b; font-weight: bold;';
             } else if (isDue) {
-                statusCell = '<span style="color: #f59e0b; font-size: 11pt; font-family: DejaVu Sans, sans-serif;">❗<b>Due<b> </span>';
+                statusCell = '<span style="color: #f59e0b; font-size: 11pt; font-family: DejaVu Sans, sans-serif;">⚠️ <b>Due<b> </span>';
                 descriptionStyle = 'color: #1e293b; font-weight: bold;';
             } else {
                 statusCell = '<span style="color: #64748b; font-size: 8pt;">Pending</span>';
@@ -1576,7 +1576,7 @@ function generatePreviewContent() {
             <div class="invoice-header">
                 <div class="left">
                     <div class="company-info">
-                        <h1 style="color: darkgoldenrod;">MANIKSHAN FOREIGN EMPLOYMENT (PVT) LTD </h1>
+                        <h1 style="color: black;">MANIKSHAN FOREIGN EMPLOYMENT (PVT) LTD </h1>
                         <div class="company-details">
                             <div class="contact-info">
                                 <div class="contact-row"><span><strong>Tel (Sri Lanka):</strong> +94 77 586 4956</span></div>
